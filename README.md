@@ -215,7 +215,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Green-AI Hub Mittelstand - info@green-ai-hub.de
 
-Project Link: [https://github.com/Green-AI-Hub-Mittelstand/repository_name](https://github.com/Green-AI-Hub-Mittelstand/llm-assisted-supprt-ticket-processing)
+Project Link: [https://github.com/Green-AI-Hub-Mittelstand/llm-assisted-supprt-ticket-processing](https://github.com/Green-AI-Hub-Mittelstand/llm-assisted-supprt-ticket-processing)
 
 <br />
   <a href="https://www.green-ai-hub.de/kontakt"><strong>Get in touch »</strong></a>
