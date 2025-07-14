@@ -1,0 +1,3 @@
+*.ipynb
+src/ingestor/
+src/templates/

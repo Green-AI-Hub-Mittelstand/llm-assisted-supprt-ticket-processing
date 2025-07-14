@@ -1,0 +1,31 @@
+FROM python:3.10-slim
+
+# RUN yum install -y mesa-libGL && \
+#     yum clean all
+
+# Copy requirements.txt
+COPY requirements.txt .
+
+# Install the specified packages
+RUN python -m pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+# Set workdir
+WORKDIR /src
+
+# Expose port
+EXPOSE 8000
+
+# local or aws 
+ENV LLM_ENV="aws"
+# local or aws
+ENV DB_ENV="aws"
+# lambda_handler
+ENV IS_LAMBDA_HANDLER="no"
+# For local deployment ollama needs a host port
+ENV OLLAMA_HOST=http://host.docker.internal:11434
+
+# Copy all files in ./src
+COPY src/ /src
+
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

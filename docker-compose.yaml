@@ -1,0 +1,10 @@
+services:
+  ingestor:
+    image: docker.io/library/fc_ingestor
+    env_flile:
+      - ./.env
+  coordinator:
+    image: docker.io/library/fc_coordinator
+    env_file:
+      - ./.env
+  

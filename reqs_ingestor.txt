@@ -1,0 +1,13 @@
+psycopg==3.2.4
+pyodbc==5.1.0
+pandas==2.2.2
+numpy==1.26.4
+ollama==0.3.3
+pydantic==2.10.3
+boto3==1.36.10
+pgvector==0.3.6
+selenium==4.27.1
+docling==2.14.0
+langdetect==1.0.9
+unstructured[html]==0.17.2
+PyMuPDF==1.24.13

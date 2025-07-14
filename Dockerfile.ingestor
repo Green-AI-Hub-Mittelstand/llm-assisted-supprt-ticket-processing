@@ -1,0 +1,56 @@
+FROM python:3.10-slim
+
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc libodbc2 curl unixodbc unixodbc-dev wget gnupg software-properties.common \
+    && rm -rf /var/lib/apt/lists/*
+
+
+# Download the package to configure the Microsoft repo
+RUN curl -sSL -O https://packages.microsoft.com/config/debian/$(grep VERSION_ID /etc/os-release | cut -d '"' -f 2 | cut -d '.' -f 1)/packages-microsoft-prod.deb
+# Install the package
+RUN dpkg -i packages-microsoft-prod.deb
+# Delete the file
+RUN rm packages-microsoft-prod.deb
+
+RUN apt-get update
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql18
+
+# Install Firefox
+RUN apt-get update && apt-get install -y firefox-esr
+
+# Determine the architecture from TARGETPLATFORM
+ARG ARCHITECTURE=aarch64
+RUN case "${TARGETPLATFORM}" in \
+        linux/arm64) ARCHITECTURE="aarch64" ;; \
+        linux/amd64|linux/x86_64) ARCHITECTURE="amd64" ;; \
+    esac
+
+# Download and install GeckoDriver based on the provided architecture
+RUN case "${ARCHITECTURE}" in \
+        aarch64) URL="https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0-linux-aarch64.tar.gz" ;; \
+        amd64|x86_64) URL="https://github.com/mozilla/geckodriver/releases/download/v0.32.0/geckodriver-v0.32.0.tar.gz" ;; \
+        *) echo "Unsupported architecture: ${ARCHITECTURE}"; exit 1 ;; \
+    esac; \
+    wget $URL -O geckodriver.tar.gz && \
+    tar -xvzf geckodriver.tar.gz && \
+    chmod +x geckodriver && \
+    mv geckodriver /usr/local/bin/ && \
+    rm geckodriver.tar.gz
+
+COPY reqs_ingestor.txt ./requirements.txt
+
+RUN python -m pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+WORKDIR /src
+
+ENV OLLAMA_HOST=http://host.docker.internal:11434
+
+# local or aws 
+ENV LLM_ENV="aws"
+# local or aws
+ENV DB_ENV="aws"
+
+COPY src/ /src
+
+CMD ["python", "ingestor_app.py"]
