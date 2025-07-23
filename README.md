@@ -86,7 +86,9 @@ Before using the systems in this repository you should setup database connection
 
 - `src/utils/utils_db.py`: logic connecting to a production database
 - `src/ingestor_app.py`: logic for syncing new devices or products with the vector database
-- `src/utils/utils_download_manuals.py`: code for automatically downloading content from manufacturer online resources
+
+> [!IMPORTANT]
+> This repository does not contain code to automatically downlaod content form manufacturer online resources. You can implement them yourself in `src/utils/utils_download_manuals.py`
 
 **Vector Database**
 
